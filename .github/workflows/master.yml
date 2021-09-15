@@ -1,0 +1,79 @@
+name: Master push CI & CD
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+
+  dependencies:
+    name: Install dependencies
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+          cache: 'npm'
+      - run: npm ci
+      - uses: actions/upload-artifact@v2
+        with:
+          path: node_modules
+
+  lint:
+    name: ESlint checkup
+    runs-on: ubuntu-20.04
+    needs: dependencies
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+      - uses: actions/download-artifact@v2
+      - run: npm run test
+
+  test:
+    name: Jest testing
+    runs-on: ubuntu-20.04
+    needs: dependencies
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+      - uses: actions/download-artifact@v2
+      - run: npm run test
+
+  build:
+    name: Bundle build
+    runs-on: ubuntu-20.04
+    needs: [lint, test]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+      - uses: actions/download-artifact@v2
+      - run: npm run build
+      - uses: actions/upload-artifact@v2
+        with:
+          path: build
+          retention-days: 1
+
+  docker:
+    name: Building and pushing docker image to ghcr.io
+    needs: build
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/download-artifact@v2
+      - uses: docker/login-action@v1 
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - uses: docker/build-push-action@v2
+        with:
+          push: true
+          tags: |
+            rasseki/game:latest
+            ghcr.io/rasseki/game:latest

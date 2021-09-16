@@ -16,9 +16,10 @@ jobs:
           node-version: '16'
           cache: 'npm'
       - run: npm ci
-      - uses: actions/upload-artifact@v2
+      - uses: actions/cache@v2
         with:
           path: node_modules
+          key: ${{ runner.os }}-build-cache-node_modules-${{ hashFiles('**/package-lock.json') }}
 
   lint:
     name: ESlint checkup
@@ -29,11 +30,14 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: '16'
-      - uses: actions/download-artifact@v2
-      - run: npm run test
+      - uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-build-cache-node_modules-${{ hashFiles('**/package-lock.json') }}
+      - run: npm run lint
 
-  test:
-    name: Jest testing
+  ts-check:
+    name: Typescript checkup
     runs-on: ubuntu-20.04
     needs: dependencies
     steps:
@@ -41,19 +45,40 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: '16'
-      - uses: actions/download-artifact@v2
-      - run: npm run test
+      - uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-build-cache-node_modules-${{ hashFiles('**/package-lock.json') }}
+      - run: npm run check
+
+  # test:
+  #   name: Jest testing
+  #   runs-on: ubuntu-20.04
+  #   needs: dependencies
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - uses: actions/setup-node@v2
+  #       with:
+  #         node-version: '16'
+  #     - uses: actions/cache@v2
+  #       with:
+  #         path: node_modules
+  #         key: ${{ runner.os }}-build-cache-node_modules-${{ hashFiles('**/package-lock.json') }}
+  #     - run: npm run test
 
   build:
     name: Bundle build
     runs-on: ubuntu-20.04
-    needs: [lint, test]
+    needs: [lint, ts-check]
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with:
           node-version: '16'
-      - uses: actions/download-artifact@v2
+      - uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-build-cache-node_modules-${{ hashFiles('**/package-lock.json') }}
       - run: npm run build
       - uses: actions/upload-artifact@v2
         with:

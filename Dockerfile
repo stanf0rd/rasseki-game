@@ -1,9 +1,7 @@
 FROM node:16-alpine
 
-ARG DIST_PATH
-
 WORKDIR /app
-COPY ${DIST_PATH} .
+COPY build .
 RUN mv index.js index.mjs
 
 EXPOSE 8080

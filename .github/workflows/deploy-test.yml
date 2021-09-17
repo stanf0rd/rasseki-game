@@ -1,0 +1,24 @@
+name: Deploy test CI & CD
+on:
+  push:
+    branches:
+      - deploy-setup
+
+jobs:
+  deploy:
+    name: Deploy test
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - run: echo "package_version=$(awk -F\" '/version/{print $4}' package.json)" >> $GITHUB_ENV
+      - run: |
+          sed 's/__APP_IMAGE__/ghcr.io\/stanf0rd\/rasseki-game:${{ env.package_version }}/' \
+          deploy/docker-compose.yml > deploy/docker-compose.temp.yml
+      - run: mv deploy/docker-compose.temp.yml deploy/docker-compose.yml
+      - run: install -b -m 600 /dev/null key
+      - run: 'echo "$SSH_KEY" > key'
+        env:
+          SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+      - run: |
+          rsync -avzr --delete -e "ssh -o StrictHostKeyChecking=no -i ./key" \
+          ./deploy ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:${{ secrets.DEPLOY_PATH }}

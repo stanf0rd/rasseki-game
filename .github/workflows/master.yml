@@ -18,7 +18,7 @@ jobs:
       - uses: actions/cache@v2
         with:
           path: node_modules
-          key: ${{ runner.os }}-build-cache-node_modules-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-cache-node_modules-${{ hashFiles('**/package-lock.json') }}
 
   lint:
     name: Prettier and ESlint checkup
@@ -32,7 +32,7 @@ jobs:
       - uses: actions/cache@v2
         with:
           path: node_modules
-          key: ${{ runner.os }}-build-cache-node_modules-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-cache-node_modules-${{ hashFiles('**/package-lock.json') }}
       - run: npm run lint
 
   ts-check:
@@ -95,15 +95,16 @@ jobs:
         with:
           name: rasseki-build
           path: build
-      - run: ls -R
       - uses: docker/login-action@v1
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
+      - run: echo "package_version={awk -F\" '/version/{print $4}' package.json}" >> $GITHUB_ENV
       - uses: docker/build-push-action@v2
         with:
           push: true
           context: .
           tags: |
             ghcr.io/stanf0rd/rasseki-game:latest
+            ghcr.io/stanf0rd/rasseki-game:${{ env.package_version }}

@@ -21,4 +21,7 @@ jobs:
           SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
       - run: |
           rsync -avzr --delete -e "ssh -o StrictHostKeyChecking=no -i ./key" \
-          ./deploy ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:${{ secrets.DEPLOY_PATH }}
+          deploy/* ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:${{ secrets.DEPLOY_PATH }}
+      - run: |
+          ssh -i ./key ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} \
+          "cd ${{ secrets.DEPLOY_PATH }}; docker-compose up -d --remove-orphans"

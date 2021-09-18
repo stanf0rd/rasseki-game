@@ -1,19 +1,51 @@
+version: '3'
+
 services:
-  proxy:
-    image: nginx:1.21.3-alpine
-    container_name: proxy
-    restart: always
-    ports:
-      - "443"
-      - "80"
-    depends_on:
-      - app-frontend
-    volumes:
-      - ./logs/nginx:/var/log/nginx
-      - ./nginx.conf:/etc/nginx/nginx.conf:ro
   app-frontend:
     image: __APP_IMAGE__
     container_name: app-frontend
     restart: always
+    environment:
+      - "VIRTUAL_HOST=rasseki.com"
+      - "HOST=rasseki.com"
+      - "PORT=3000"
     expose:
       - "3000"
+
+  nginx-proxy:
+    image: nginxproxy/nginx-proxy
+    container_name: nginx-proxy
+    labels:
+      com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy: "true"
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - conf:/etc/nginx/conf.d
+      - vhost:/etc/nginx/vhost.d
+      - html:/usr/share/nginx/html
+      - dhparam:/etc/nginx/dhparam
+      - certs:/etc/nginx/certs:ro
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+    network_mode: bridge
+
+  acme-companion:
+    image: nginxproxy/acme-companion
+    container_name: nginx-proxy-acme
+    volumes:
+      - conf:/etc/nginx/conf.d
+      - vhost:/etc/nginx/vhost.d
+      - html:/usr/share/nginx/html
+      - dhparam:/etc/nginx/dhparam
+      - certs:/etc/nginx/certs:rw
+      - acme:/etc/acme.sh
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    network_mode: bridge
+
+volumes:
+  conf:
+  vhost:
+  html:
+  dhparam:
+  certs:
+  acme:

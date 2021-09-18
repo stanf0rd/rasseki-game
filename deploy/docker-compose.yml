@@ -6,8 +6,9 @@ services:
     container_name: app-frontend
     restart: always
     environment:
+      - 'LETSENCRYPT_HOST_HOST=rasseki.com'
       - 'VIRTUAL_HOST=rasseki.com'
-      - 'HOST=rasseki.com'
+      - 'VIRTUAL_PORT=3000'
       - 'PORT=3000'
     expose:
       - '3000'

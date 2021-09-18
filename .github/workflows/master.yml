@@ -65,7 +65,7 @@ jobs:
             ghcr.io/stanf0rd/rasseki-game:${{ env.package_version }}
 
   deploy:
-    name: Deploy test
+    name: Deploy via rsync & ssh
     needs: docker
     runs-on: ubuntu-20.04
     steps:
@@ -84,4 +84,4 @@ jobs:
           deploy/* ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:${{ secrets.DEPLOY_PATH }}
       - run: |
           ssh -i ./key ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} \
-          "cd ${{ secrets.DEPLOY_PATH }}; docker-compose up -d --remove-orphans"
+          "cd ${{ secrets.DEPLOY_PATH }}; docker-compose pull; docker-compose up -d --remove-orphans"

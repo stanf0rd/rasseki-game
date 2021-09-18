@@ -1,4 +1,4 @@
-name: Master push CI & CD
+name: Check, build, push and deploy - master push CI & CD
 on:
   push:
     branches:
@@ -47,7 +47,7 @@ jobs:
       - uses: actions/cache@v2
         with:
           path: node_modules
-          key: ${{ runner.os }}-build-cache-node_modules-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-cache-node_modules-${{ hashFiles('**/package-lock.json') }}
       - run: npm run check
 
   # test:

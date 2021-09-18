@@ -6,20 +6,20 @@ services:
     container_name: app-frontend
     restart: always
     environment:
-      - "VIRTUAL_HOST=rasseki.com"
-      - "HOST=rasseki.com"
-      - "PORT=3000"
+      - 'VIRTUAL_HOST=rasseki.com'
+      - 'HOST=rasseki.com'
+      - 'PORT=3000'
     expose:
-      - "3000"
+      - '3000'
 
   nginx-proxy:
     image: nginxproxy/nginx-proxy
     container_name: nginx-proxy
     labels:
-      com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy: "true"
+      com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy: 'true'
     ports:
-      - "80:80"
-      - "443:443"
+      - '80:80'
+      - '443:443'
     volumes:
       - conf:/etc/nginx/conf.d
       - vhost:/etc/nginx/vhost.d

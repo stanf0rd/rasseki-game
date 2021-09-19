@@ -1,4 +1,4 @@
-name: Build, push and deploy - master push CI & CD
+name: build-and-deploy
 on:
   push:
     branches:

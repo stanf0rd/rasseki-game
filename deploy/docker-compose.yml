@@ -6,18 +6,17 @@ services:
     container_name: app-frontend
     restart: always
     environment:
-      - 'LETSENCRYPT_HOST_HOST=rasseki.com'
       - 'VIRTUAL_HOST=rasseki.com'
       - 'VIRTUAL_PORT=3000'
+      - 'LETSENCRYPT_HOST=rasseki.com'
+      - 'LETSENCRYPT_EMAIL=dmitrydpaliy@gmail.com'
       - 'PORT=3000'
     expose:
       - '3000'
 
   nginx-proxy:
-    image: nginxproxy/nginx-proxy
+    image: nginxproxy/nginx-proxy:alpine
     container_name: nginx-proxy
-    labels:
-      com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy: 'true'
     ports:
       - '80:80'
       - '443:443'
@@ -28,11 +27,12 @@ services:
       - dhparam:/etc/nginx/dhparam
       - certs:/etc/nginx/certs:ro
       - /var/run/docker.sock:/tmp/docker.sock:ro
-    network_mode: bridge
 
-  acme-companion:
+  nginx-proxy-acme:
     image: nginxproxy/acme-companion
     container_name: nginx-proxy-acme
+    environment:
+      - 'NGINX_PROXY_CONTAINER=nginx-proxy'
     volumes:
       - conf:/etc/nginx/conf.d
       - vhost:/etc/nginx/vhost.d
@@ -41,7 +41,6 @@ services:
       - certs:/etc/nginx/certs:rw
       - acme:/etc/acme.sh
       - /var/run/docker.sock:/var/run/docker.sock:ro
-    network_mode: bridge
 
 volumes:
   conf:

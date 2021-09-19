@@ -1,19 +1,21 @@
-# 🏮 Rasseki Game
+# ⛰ Rasseki Game
 
-Web-based 2D-game. More info will be added during development.
+Web-based 2D-game
 
-## 🤔 About development
+![!Version](https://img.shields.io/github/package-json/v/stanf0rd/rasseki-game)
+![Build](https://img.shields.io/github/workflow/status/stanf0rd/rasseki-game/build-and-deploy?logo=github)
+![Last commit](https://img.shields.io/github/last-commit/stanf0rd/rasseki-game?logo=git&logoColor=white)
+[![Maintainability](https://img.shields.io/codeclimate/maintainability/stanf0rd/rasseki-game?logo=codeclimate)](https://codeclimate.com/github/stanf0rd/rasseki-game/maintainability)
 
-I really don't know, what it will look like.  
+## 🛸 About development
+
+I really don't know now what it will look like.  
 But hope I will have fun during development.
 
 ## ⚙️ Technologies
 
-- Svelte
-- SvelteKit
-- Typescript
-- AssemblyScript as engine base
-- SCSS as CSS-preprocessor
+- Svelte & SvelteKit
+- Typescript & AssemblyScript as engine base
 
 ## 🚀 Scripts
 
@@ -33,4 +35,4 @@ npm run dev -- --open
 npm run build
 ```
 
-> You can preview the built app with `npm run preview`. This should _not_ be used to serve your app in production.
+> You can preview the built app with `npm run preview`.

@@ -1,4 +1,4 @@
-name: Just checkup - on pull request
+name: checkup
 on:
   pull_request:
     branches:

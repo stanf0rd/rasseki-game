@@ -3,12 +3,12 @@ export default class GameMap {
     private source: string;
     private map: Uint8Array;
     private width: number;
-    private height: number;
+    // private height: number;
 
     constructor() {
         this.source = '/maps/1/surfaces.rsk';
         this.width = 160;
-        this.height = 144;
+        // this.height = 144;
 
         fetch(this.source)
             .then(async response => {

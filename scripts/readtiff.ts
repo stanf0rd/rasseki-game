@@ -34,14 +34,15 @@ async function main() {
 
     const surfaces = getSurfaces(page);
     const buffer = Buffer.alloc(page.size);
+
     for (let line = 0; line < height; line++) {
         for (let i = 0; i < width; i++) {
-            const color = getPixelColor(page.data, line * width + i);
+            const pixelIndex = line * width + i;
 
-            const colorID = surfaces[color];
-            if (colorID) {
-                buffer.writeUInt8(colorID, line * width + i);
-            }
+            const color = getPixelColor(page.data, pixelIndex);
+            const colorID = surfaces[color] || 0;
+
+            buffer.writeUInt8(colorID, pixelIndex);
         }
     }
 

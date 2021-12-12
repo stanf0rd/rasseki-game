@@ -1,7 +1,18 @@
 module.exports = {
-  useTabs: false,
-  tabWidth: 2,
+  arrowParens: 'avoid',
+  printWidth: 80,
+  quoteProps: 'consistent',
+  semi: true,
   singleQuote: true,
-  trailingComma: 'es5',
-  printWidth: 100,
+  tabWidth: 2,
+  trailingComma: 'all',
+  useTabs: false,
+  overrides: [
+    {
+      files: ['*.ts'],
+      options: {
+        tabWidth: 4,
+      },
+    },
+  ],
 };

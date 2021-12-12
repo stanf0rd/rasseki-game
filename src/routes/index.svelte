@@ -1,9 +1,16 @@
 <script lang="ts">
+  // import { onMount } from 'svelte';
+
+  import Map from '@/components/Map.svelte';
 </script>
 
 <div class="app">
-  <header class="app__header rounded-block"><h1>Rasseki</h1></header>
-  <div class="app__map rounded-block" />
+  <header class="app__header rounded-block">
+    <h1>Rasseki</h1>
+  </header>
+  <div class="app__map rounded-block">
+    <Map />
+  </div>
   <div class="app__side rounded-block" />
   <footer class="app__footer rounded-block" />
 </div>
@@ -56,6 +63,9 @@
 
     &__map {
       grid-area: map;
+      display: flex;
+      justify-content: center;
+      overflow: hidden;
     }
 
     &__side {

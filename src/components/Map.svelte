@@ -11,10 +11,10 @@
   let canvas: HTMLCanvasElement;
   $: context = canvas && (canvas.getContext('2d') as CanvasRenderingContext2D);
   let rect: DOMRect;
-  let width, height, bgScale, surfaceScale: number;
+  let width: number, height: number, bgScale: number; //, surfaceScale: number;
 
   // images
-  let background, arrow: HTMLImageElement;
+  let background: HTMLImageElement, arrow: HTMLImageElement;
 
   function replacePlayer(event: MouseEvent): void {
     if (!rect) rect = canvas.getBoundingClientRect();
@@ -37,7 +37,7 @@
 
     bgScale = width / background.width;
 
-    surfaceScale = width / $map.width;
+    // surfaceScale = width / $map.width;
 
     if (!context) throw new Error('Cannot find canvas context');
     context.imageSmoothingEnabled = false;

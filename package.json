@@ -3,7 +3,7 @@
   "version": "0.0.1-draft",
   "type": "module",
   "scripts": {
-    "dev": "svelte-kit dev",
+    "dev": "svelte-kit dev --host",
     "build": "svelte-kit build",
     "preview": "svelte-kit preview",
     "check": "svelte-check --tsconfig ./tsconfig.json",
@@ -26,6 +26,8 @@
     "svelte": "^3.34.0",
     "svelte-check": "^2.0.0",
     "svelte-preprocess": "^4.0.0",
+    "tiff": "^5.0.1",
+    "ts-node": "^10.3.0",
     "tslib": "^2.0.0",
     "typescript": "^4.0.0"
   },

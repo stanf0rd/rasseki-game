@@ -1,7 +1,7 @@
 <script lang="ts">
   // import { onMount } from 'svelte';
 
-  import Map from '@/components/Map.svelte';
+  import Map from '$features/map';
 </script>
 
 <div class="app">
@@ -19,7 +19,7 @@
   .app {
     height: 100vh;
     width: 1000px;
-    overflow: scroll;
+    overflow: auto;
 
     margin: auto;
     padding: 20px 0;

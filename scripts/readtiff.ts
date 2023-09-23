@@ -8,6 +8,7 @@ function getPixelColor(data: DataArray, index: number): number {
     const r = data[4 * index],
         g = data[4 * index + 1],
         b = data[4 * index + 2],
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         a = data[4 * index + 3];
 
     return 1000000 * r + 1000 * g + b;

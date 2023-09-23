@@ -1,5 +1,5 @@
-import type { Map } from '@/types/map';
 import { writable } from 'svelte/store';
+import type { Map } from './types';
 
 export const map = writable<Map>({
     width: 160,

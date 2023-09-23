@@ -1,9 +1,9 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { loadImage } from '@/utils/image';
+  import { loadImage } from '$shared/lib/image';
 
-  import GameMap from '@/core/gamemap';
-  import { map } from '@/stores/map';
+  import GameMap from './lib/gamemap';
+  import { map } from './lib/map';
 
   let gameMap: GameMap;
 
@@ -29,6 +29,7 @@
 
   onMount(async () => {
     gameMap = new GameMap();
+    console.log({ gameMap });
 
     [background, arrow] = await Promise.all([
       loadImage($map.imageSource),

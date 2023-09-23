@@ -1,7 +1,7 @@
 /** Class that fetches and stores map data and provides access to it */
 export default class GameMap {
     private source: string;
-    private map: Uint8Array;
+    private map: Uint8Array | null = null;
     private width: number;
     // private height: number;
 
@@ -12,10 +12,13 @@ export default class GameMap {
 
         fetch(this.source)
             .then(async response => {
+                if (!response.body)
+                    throw new Error('Response body was not received');
+
                 const reader = response.body.getReader();
 
                 let { done, value } = await reader.read();
-                while (!done) {
+                while (!done && value) {
                     if (!this.map) this.map = value;
                     else this.map.set(value, this.map.length);
 
@@ -27,6 +30,8 @@ export default class GameMap {
     }
 
     public getSurface(x: number, y: number): number {
+        if (!this.map) throw new Error('Map data was not fetched');
+
         return this.map[this.width * y + x];
     }
 }

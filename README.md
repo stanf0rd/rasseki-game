@@ -3,7 +3,7 @@
 Web-based 2D-game
 
 ![!Version](https://img.shields.io/github/package-json/v/stanf0rd/rasseki-game)
-![Build](https://img.shields.io/github/workflow/status/stanf0rd/rasseki-game/build-and-deploy?logo=github)
+![Build](https://img.shields.io/github/actions/workflow/status/stanf0rd/rasseki-game/master.yml?branch=master&logo=github)
 ![Last commit](https://img.shields.io/github/last-commit/stanf0rd/rasseki-game?logo=git&logoColor=white)
 [![Maintainability](https://img.shields.io/codeclimate/maintainability/stanf0rd/rasseki-game?logo=codeclimate)](https://codeclimate.com/github/stanf0rd/rasseki-game/maintainability)
 

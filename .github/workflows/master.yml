@@ -9,13 +9,13 @@ jobs:
     name: dependencies
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
-          node-version: '16'
+          node-version: '20'
           cache: 'npm'
       - run: npm ci
-      - uses: actions/cache@v2
+      - uses: actions/cache@v3
         with:
           path: node_modules
           key: ${{ runner.os }}-cache-node_modules-${{ hashFiles('**/package-lock.json') }}
@@ -25,16 +25,16 @@ jobs:
     runs-on: ubuntu-20.04
     needs: dependencies
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
-          node-version: '16'
-      - uses: actions/cache@v2
+          node-version: '20'
+      - uses: actions/cache@v3
         with:
           path: node_modules
           key: ${{ runner.os }}-cache-node_modules-${{ hashFiles('**/package-lock.json') }}
       - run: npm run build
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: rasseki-build
           path: build
@@ -45,8 +45,8 @@ jobs:
     needs: build
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/download-artifact@v2
+      - uses: actions/checkout@v3
+      - uses: actions/download-artifact@v3
         with:
           name: rasseki-build
           path: build
@@ -69,7 +69,7 @@ jobs:
     needs: docker
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - run: echo "package_version=$(awk -F\" '/version/{print $4}' package.json)" >> $GITHUB_ENV
       - run: |
           sed 's/__APP_IMAGE__/ghcr.io\/stanf0rd\/rasseki-game:${{ env.package_version }}/' \
